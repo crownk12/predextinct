@@ -7,12 +7,20 @@
 disp(Stages, SexDep, prob_dispersal_0, prob_dispersal_1, Distances)
 }
 \arguments{
-\item{a}{,b : two numbers to be operated}
+\item{Stages}{: Number of life-Stages (integer). Requires a minimum of 2, for "juvenile" (stage 0) and "adult". Maximum is 3.}
+
+\item{SexDep}{: Sex-dependent emigration probability? (default: FALSE)}
+
+\item{prob_dispersal_0}{: Dispersal probability (emigration probability) of stage 0 (juvenile)}
+
+\item{prob_dispersal_1}{: Dispersal probability (emigration probability) of stage 1 (sub-juvenile)}
+
+\item{Distnaces}{: Distances of species dispersal}
 }
 \description{
-This function
+This function is a sub-function of setscenario().
 }
 \examples{
 disp()
 }
-\keyword{Add}
+\keyword{disp}

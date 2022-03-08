@@ -7,12 +7,12 @@
 setscenario(csv_file)
 }
 \arguments{
-\item{a}{,b : two numbers to be operated}
+\item{csv_file}{: The name of csv format file. It should be loacated in the working directory.}
 }
 \description{
-This function
+This function is setting up a parameters that can be used in RangeShiftR::RunRS() to run a simulation.
 }
 \examples{
 setscenario()
 }
-\keyword{Add}
+\keyword{setscenario}

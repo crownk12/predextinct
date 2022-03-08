@@ -4,15 +4,15 @@
 \alias{predextinct.prob}
 \title{predextinct.prob() Function}
 \usage{
-predextinct.prob(s, dirpath)
+predextinct.prob(s)
 }
 \arguments{
-\item{a}{,b : two numbers to be operated}
+\item{s}{: The output of setscenario()}
 }
 \description{
-This function
+This function predict the probability of species extinction. Read the RangeshiftR output file from RangeShiftR::readPop.
 }
 \examples{
 predextinct.prob()
 }
-\keyword{Add}
+\keyword{predextinct.prob}

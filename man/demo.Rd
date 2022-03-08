@@ -14,12 +14,22 @@ demo(
 )
 }
 \arguments{
-\item{a}{,b : two numbers to be operated}
+\item{Stages}{: Number of life-Stages (integer). Requires a minimum of 2, for "juvenile" (stage 0) and "adult". Maximum is 3.}
+
+\item{MaxAge}{: Maximum age in years}
+
+\item{ReproductionType}{: 0 = asexual / only female model (default), 1 = simple sexual model, 2 = sexual model with explicit mating system}
+
+\item{prob_reproduction}{: Probability to produce offsprings}
+
+\item{num_offsprings}{: Expected the number of offsprings}
+
+\item{prob_surv}{: Probability to survive}
 }
 \description{
-This function
+This function is a sub-function of setscenario().
 }
 \examples{
 demo()
 }
-\keyword{Add}
+\keyword{demo}

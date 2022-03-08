@@ -4,15 +4,15 @@
 \alias{runscenario}
 \title{runscenario() Function}
 \usage{
-runscenario(s_list, dirpath)
+runscenario(s_list)
 }
 \arguments{
-\item{a}{,b : two numbers to be operated}
+\item{s_list}{: The output of setscenario(). It is better to set a variable from setscenario.}
 }
 \description{
-This function
+This function is run the simulation from RangeShiftR::RunRS.
 }
 \examples{
 runscenario()
 }
-\keyword{Add}
+\keyword{runscenario}

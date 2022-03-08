@@ -4,15 +4,15 @@
 \alias{predextinct.time}
 \title{predextinct.time() Function}
 \usage{
-predextinct.time(s, dirpath)
+predextinct.time(s)
 }
 \arguments{
-\item{a}{,b : two numbers to be operated}
+\item{s}{: The output of setscenario()}
 }
 \description{
-This function
+This function predict the time of species extinction. Read the RangeshiftR output file from RangeShiftR::readPop.
 }
 \examples{
 predextinct.time()
 }
-\keyword{Add}
+\keyword{predextinct.time}
