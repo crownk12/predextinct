@@ -1,6 +1,6 @@
 Package: predextinct
 Title: Predicting Species Extinctions
-Version: 0.0.1
+Version: 0.0.1.1
 Authors@R: 
     person("Wonkyun", "Yim", "yimwk88@email.arizona.edu", role = c("aut", "cre")),
     person("Cristian", "Roman Palacios", "cromanpa94@arizona.edu", role = c("aut"))
