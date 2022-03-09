@@ -1,9 +1,10 @@
 Package: predextinct
 Title: Predicting Species Extinctions
 Version: 0.0.1.1
-Authors@R: 
+Authors@R: c(
     person("Wonkyun", "Yim", "yimwk88@email.arizona.edu", role = c("aut", "cre")),
     person("Cristian", "Roman Palacios", "cromanpa94@arizona.edu", role = c("aut"))
+    )
 Date: 2022-03-08
 URL: https://github.com/crownk12/predextinct/
 Description: Predicting species-level extinctions from population-level data for climate-related extinction risk assessment.
