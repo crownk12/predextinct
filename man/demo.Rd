@@ -4,21 +4,12 @@
 \alias{demo}
 \title{demo() Function}
 \usage{
-demo(
-  Stages,
-  MaxAge,
-  ReproductionType,
-  prob_reproduction,
-  num_offsprings,
-  prob_surv
-)
+demo(Stages, MaxAge, prob_reproduction, num_offsprings, prob_surv)
 }
 \arguments{
 \item{Stages}{: Number of life-Stages (integer). Requires a minimum of 2, for "juvenile" (stage 0) and "adult". Maximum is 3.}
 
 \item{MaxAge}{: Maximum age in years}
-
-\item{ReproductionType}{: 0 = asexual / only female model (default), 1 = simple sexual model, 2 = sexual model with explicit mating system}
 
 \item{prob_reproduction}{: Probability to produce offsprings}
 

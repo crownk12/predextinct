@@ -4,12 +4,10 @@
 \alias{disp}
 \title{disp() Function}
 \usage{
-disp(Stages, SexDep, prob_dispersal_0, prob_dispersal_1, Distances)
+disp(Distances, Stages, prob_dispersal_0, prob_dispersal_1)
 }
 \arguments{
 \item{Stages}{: Number of life-Stages (integer). Requires a minimum of 2, for "juvenile" (stage 0) and "adult". Maximum is 3.}
-
-\item{SexDep}{: Sex-dependent emigration probability? (default: FALSE)}
 
 \item{prob_dispersal_0}{: Dispersal probability (emigration probability) of stage 0 (juvenile)}
 
