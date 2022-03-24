@@ -1,7 +1,10 @@
 #' predextinct.time() Function
 #'
-#' This function predict the time of species extinction. Read the RangeshiftR output file from RangeShiftR::readPop.
+#' This function predict the time (in years) for the species to experience extinction.
+#' Read the RangeshiftR output file from RangeShiftR::readPop.
 #' @param s : The output of setscenario()
+#' @import RangeShiftR
+#' @import dplyr
 #' @keywords predextinct.time
 #' @export
 #' @examples
@@ -10,27 +13,23 @@
 
 # Extinction Time after 50 years
 
-predextinct.time <-function(s){
-
-  require(RangeShiftR)
-
-  require(dplyr)
-
+predextinct.time <-function(s, folder="data/"){
   time_ls <- list()
 
-  for(i in 1:length(s)){
-
-    time_ls[[i]] <- readPop(s[[i]], "data/") %>%
+  time_ls <- lapply(s, function(x){
+    readPop(x, folder) %>%
       group_by(Rep, Year) %>%
       summarise(sumPop = sum(NInd), .groups = "keep") %>%
       filter(sumPop == 0) %>%
-      pull(Year) %>% mean
+      pull(Year) %>%
+      mean
+  })
 
-  }
+  sumDataset <- data.frame(ID = c(1:length(s)),
+             ExtTime.50y = ifelse(is.na(time_ls),
+                                  yes = "No extinction",
+                                  no = time_ls))
 
-  return(data.frame(ID = c(1:length(s)),
-                    ExtTime.50y = ifelse(is.na(time_ls),
-                                         yes = "No extinction",
-                                         no = time_ls)))
+  return(sumDataset)
 
 }

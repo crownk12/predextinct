@@ -1,22 +1,28 @@
 #' demo() Function
 #'
 #' This function is a sub-function of setscenario().
+#'
 #' @param Stages : Number of life-Stages (integer). Requires a minimum of 2, for "juvenile" (stage 0) and "adult". Maximum is 3.
 #' @param MaxAge : Maximum age in years
 #' @param prob_reproduction : Probability to produce offsprings
 #' @param num_offsprings : Expected the number of offsprings
 #' @param prob_surv : Probability to survive
+#'
+#' @import RangeShiftR
+#'
 #' @keywords demo
 #' @export
 #' @examples
+#' dontrun{
 #' demo()
+#' }
 
 
 # Demography
 
 demo <- function(Stages, MaxAge, prob_reproduction, num_offsprings, prob_surv){
 
-  require(RangeShiftR) # RangeShiftR should be installed.
+  #require(RangeShiftR) # RangeShiftR should be installed.
 
   # Sub-function
   stg <- function(Stages, MaxAge, prob_reproduction, num_offsprings, prob_surv){

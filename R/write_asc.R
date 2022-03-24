@@ -1,8 +1,13 @@
 #' write_asc() Function
 #'
 #' This function is working for creating ASCII Raster format files of species from GBIF datasets.
-#' @param csv_file : The name of csv format file. It should be loacated in the working directory.
+#' @param csv_file : The name of csv format file. It should be located in the working directory.
 #' @keywords csv_file
+#' @import dplyr
+#' @import RangeShiftR
+#' @import raster
+#' @import dismo
+#' @import rstatix
 #' @export
 #' @examples
 #' write_asc()
@@ -10,18 +15,14 @@
 
 # write_asc
 
-write_asc <- function(csv_file){
+write_asc <- function(csv_file, folder="data/"){
 
-  require(dplyr)
-  require(RangeShiftR)
-  require(raster)
-  require(dismo)
-  require(rstatix)
-
-  data_df <- read.csv(paste0("data/", csv_file), header = T) # csv files of demo and disp
+  data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of demo and disp
 
   species_xy <- c()
   rasters <- c()
+
+  ##I'd recommend to write a single loop instead of three. Each iteration is an species.
 
   for(i in 1:nrow(data_df)){
     species_xy <- c(species_xy, gbif(genus = data_df$genus[i], # genus
