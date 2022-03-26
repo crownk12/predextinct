@@ -2,7 +2,9 @@
 #'
 #' This function is setting up a parameters that can be used in RangeShiftR::RunRS() to run a simulation.
 #' @param csv_file : The name of csv format file. It should be loacated in the working directory.
+#' @param folder: [complete].
 #' @keywords setscenario
+#' @import RangeShiftR
 #' @export
 #' @examples
 #' setscenario()
@@ -10,13 +12,13 @@
 
 # Parameter Master
 
-setscenario <- function(csv_file){
+setscenario <- function(csv_file, folder = "data/"){
 
   require(RangeShiftR)
   require(raster)
 
-  inputs_file <- list.files(paste0("data/", "Inputs")) # asc raster files
-  data_df <- read.csv(paste0("data/", csv_file), header = T) # csv files of demo and disp
+  inputs_file <- list.files(paste0(folder, "Inputs")) # asc raster files
+  data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of demo and disp
 
   if(length(inputs_file) == nrow(data_df)){
 

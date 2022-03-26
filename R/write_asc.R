@@ -15,14 +15,15 @@
 
 # write_asc
 
-write_asc <- function(csv_file, folder="data/"){
+write_asc <- function(csv_file, folder = "data/"){
 
   data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of demo and disp
 
   species_xy <- c()
   rasters <- c()
 
-  ##I'd recommend to write a single loop instead of three. Each iteration is an species.
+  ### Cristian: I'd recommend to write a single loop instead of three. Each iteration is an species.
+  ### Wonkyun: Gotcha. Not two loop, right? (Three loop?)
 
   for(i in 1:nrow(data_df)){
     species_xy <- c(species_xy, gbif(genus = data_df$genus[i], # genus
@@ -40,20 +41,18 @@ write_asc <- function(csv_file, folder="data/"){
                       filter(!is.na(longitude)) %>% # Remove Null Values
                       filter(!is_extreme(latitude)) %>% # Remove Outliers
                       filter(!is_extreme(longitude)) %>% # Remove Outliers
-                      filter(year > 1945) %>% # Remove records from before second world war
+                      filter(year > 1945) %>% # Remove records from before The Second World War
                       list() # Covert to list()
     )
-  }
 
-  'We might also want to exclude very old records, as they are more likely to be unreliable.
-  For instance, records from before the second world war are often very imprecise,
-  especially if they were geo-referenced based on political entities.
-  Additionally old records might be likely from areas where species went extinct
-  (for example due to land-use change). '
 
-  # Set coordinates, x-y
+'We might also want to exclude very old records, as they are more likely to be unreliable.
+For instance, records from before the second world war are often very imprecise,
+especially if they were geo-referenced based on political entities.
+Additionally old records might be likely from areas where species went extinct
+(for example due to land-use change). '
 
-  for(i in 1:nrow(data_df)){
+    # Set coordinates, x-y
 
     # Create an extent-range.
 
@@ -97,7 +96,7 @@ write_asc <- function(csv_file, folder="data/"){
 
     # Save a raster file as integer
 
-    raster_name = paste(data_df$genus[i], data_df$species[i])
+    raster_name <- paste(data_df$genus[i], data_df$species[i])
 
     writeRaster(predict.presence,
                 filename = paste0("data/Inputs/", i, "_", raster_name),

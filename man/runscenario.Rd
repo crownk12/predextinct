@@ -4,10 +4,12 @@
 \alias{runscenario}
 \title{runscenario() Function}
 \usage{
-runscenario(s_list)
+runscenario(s_list, folder = "data/")
 }
 \arguments{
 \item{s_list}{: The output of setscenario(). It is better to set a variable from setscenario.}
+
+\item{folder:}{\link{complete}.}
 }
 \description{
 This function is run the simulation from RangeShiftR::RunRS.

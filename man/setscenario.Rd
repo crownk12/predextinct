@@ -4,10 +4,12 @@
 \alias{setscenario}
 \title{setscenario() Function}
 \usage{
-setscenario(csv_file)
+setscenario(csv_file, folder = "data/")
 }
 \arguments{
 \item{csv_file}{: The name of csv format file. It should be loacated in the working directory.}
+
+\item{folder:}{\link{complete}.}
 }
 \description{
 This function is setting up a parameters that can be used in RangeShiftR::RunRS() to run a simulation.

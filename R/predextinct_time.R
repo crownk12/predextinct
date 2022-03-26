@@ -1,19 +1,21 @@
-#' predextinct.time() Function
+#' predextinct_time() Function
 #'
 #' This function predict the time (in years) for the species to experience extinction.
 #' Read the RangeshiftR output file from RangeShiftR::readPop.
 #' @param s : The output of setscenario()
+#' @param folder: [complete].
 #' @import RangeShiftR
 #' @import dplyr
-#' @keywords predextinct.time
+#' @keywords predextinct_time
 #' @export
 #' @examples
-#' predextinct.time()
+#' predextinct_time()
 
 
 # Extinction Time after 50 years
 
-predextinct.time <-function(s, folder="data/"){
+predextinct_time <-function(s, folder = "data/"){
+
   time_ls <- list()
 
   time_ls <- lapply(s, function(x){

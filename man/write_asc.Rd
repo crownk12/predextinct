@@ -4,10 +4,10 @@
 \alias{write_asc}
 \title{write_asc() Function}
 \usage{
-write_asc(csv_file)
+write_asc(csv_file, folder = "data/")
 }
 \arguments{
-\item{csv_file}{: The name of csv format file. It should be loacated in the working directory.}
+\item{csv_file}{: The name of csv format file. It should be located in the working directory.}
 }
 \description{
 This function is working for creating ASCII Raster format files of species from GBIF datasets.
