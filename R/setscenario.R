@@ -18,7 +18,7 @@ setscenario <- function(csv_file, folder = "data/"){
   require(raster)
 
   inputs_file <- list.files(paste0(folder, "Inputs")) # asc raster files
-  data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of demo and disp
+  data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of sp_demography and sp_dispersal
 
   if(length(inputs_file) == nrow(data_df)){
 
@@ -41,16 +41,16 @@ setscenario <- function(csv_file, folder = "data/"){
                                           HabPercent = T,
                                           K_or_DensDep = 0.5)) # Density Dependence 1/b
 
-      demos <- c(demos, demo(obs$Stages,
-                             obs$MaxAge,
-                             obs$prob_reproduction,
-                             obs$num_offsprings,
-                             obs$prob_surv))
+      demos <- c(demos, sp_demography(obs$Stages,
+                                      obs$MaxAge,
+                                      obs$prob_reproduction,
+                                      obs$num_offsprings,
+                                      obs$prob_surv))
 
-      disps <- c(disps, disp(Distances = as.numeric(obs$Distances),
-                             Stages = obs$Stages,
-                             prob_dispersal_0 = obs$prob_dispersal_0,
-                             prob_dispersal_1 = obs$prob_dispersal_1))
+      disps <- c(disps, sp_dispersal(Distances = as.numeric(obs$Distances),
+                                     Stages = obs$Stages,
+                                     prob_dispersal_0 = obs$prob_dispersal_0,
+                                     prob_dispersal_1 = obs$prob_dispersal_1))
 
       inits <- c(inits, Initialise(InitType = 0,
                                    FreeType = 1,

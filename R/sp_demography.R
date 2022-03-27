@@ -18,7 +18,7 @@
 
 # Demography
 
-demo <- function(Stages, MaxAge, prob_reproduction, num_offsprings, prob_surv){
+sp_demography <- function(Stages, MaxAge, prob_reproduction, num_offsprings, prob_surv){
 
   Demography(StageStruct = sp_stage(Stages,
                                     MaxAge,

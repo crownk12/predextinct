@@ -14,7 +14,7 @@
 #' }
 
 
-disp <- function(Distances, Stages, prob_dispersal_0, prob_dispersal_1){
+sp_dispersal <- function(Distances, Stages, prob_dispersal_0, prob_dispersal_1){
 
   Dispersal(Emigration = Emigration(EmigProb = emig_prob(Stages,
                                                          prob_dispersal_0,
