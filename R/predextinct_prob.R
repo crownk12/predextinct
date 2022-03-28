@@ -6,12 +6,11 @@
 #' @param folder: [complete].
 #' @keywords predextinct_prob
 #' @import RangeShiftR
-#' @import dplyr
+#' @importFrom dplyr union select intersect
 #' @export
 #' @examples
-#' dontrun{
 #' predextinct_prob()
-#' }
+
 
 predextinct_prob <-function(s, folder = "data/"){
 

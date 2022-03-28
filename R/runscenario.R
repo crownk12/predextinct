@@ -19,4 +19,3 @@ runscenario <- function(s_list, folder = "data/"){
   }
 
 }
-

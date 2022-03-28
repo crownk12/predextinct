@@ -5,7 +5,7 @@
 #' @param s : The output of setscenario()
 #' @param folder: [complete].
 #' @import RangeShiftR
-#' @import dplyr
+#' @importFrom dplyr union select intersect
 #' @keywords predextinct_time
 #' @export
 #' @examples
@@ -28,9 +28,9 @@ predextinct_time <-function(s, folder = "data/"){
   })
 
   sumDataset <- data.frame(ID = c(1:length(s)),
-             ExtTime.50y = ifelse(is.na(time_ls),
-                                  yes = "No extinction",
-                                  no = time_ls))
+                           ExtTime.50y = ifelse(is.na(time_ls),
+                           yes = "No extinction",
+                           no = time_ls))
 
   return(sumDataset)
 

@@ -3,11 +3,11 @@
 #' This function is working for creating ASCII Raster format files of species from GBIF datasets.
 #' @param csv_file : The name of csv format file. It should be located in the working directory.
 #' @keywords csv_file
-#' @import dplyr
 #' @import RangeShiftR
-#' @import raster
 #' @import dismo
-#' @import rstatix
+#' @importFrom rstatix is_extreme
+#' @importFrom dplyr union select intersect
+#' @import raster
 #' @export
 #' @examples
 #' write_asc()
@@ -39,8 +39,8 @@ write_asc <- function(csv_file, folder = "data/"){
                       filter(!source %in% c("FOSSIL_SPECIMEN")) %>% # Remove Fossil data
                       filter(!is.na(latitude)) %>% # Remove Null Values
                       filter(!is.na(longitude)) %>% # Remove Null Values
-                      filter(!is_extreme(latitude)) %>% # Remove Outliers
-                      filter(!is_extreme(longitude)) %>% # Remove Outliers
+                      filter(!rstatix::is_extreme(latitude)) %>% # Remove Outliers
+                      filter(!rstatix::is_extreme(longitude)) %>% # Remove Outliers
                       filter(year > 1945) %>% # Remove records from before The Second World War
                       list() # Covert to list()
     )
