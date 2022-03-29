@@ -4,6 +4,10 @@
 #' Note that this function ignores the SexDep argument.
 #'
 #' @export
+#' #' @examples
+#' dontrun{
+#' emig_prob()
+#' }
 
 emig_prob <- function(Stages, prob_dispersal_0, prob_dispersal_1){
 

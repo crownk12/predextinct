@@ -4,6 +4,10 @@
 #'
 #'
 #' @export
+#' #' @examples
+#' dontrun{
+#' sp_stage()
+#' }
 
 sp_stage <- function(Stages, MaxAge, prob_reproduction, num_offsprings, prob_surv){
 

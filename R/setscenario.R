@@ -86,7 +86,8 @@ setscenario <- function(csv_file, folder = "data/"){
                demog = params_mat[[i, 2]],
                dispersal = params_mat[[i, 3]],
                init = params_mat[[i, 4]],
-               simul = sim)
+               simul = sim,
+               seed = 324135)
 
     s_list <- c(s_list, s)
 

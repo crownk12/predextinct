@@ -39,8 +39,8 @@ write_asc <- function(csv_file, folder = "data/"){
                       filter(!source %in% c("FOSSIL_SPECIMEN")) %>% # Remove Fossil data
                       filter(!is.na(latitude)) %>% # Remove Null Values
                       filter(!is.na(longitude)) %>% # Remove Null Values
-                      filter(!rstatix::is_extreme(latitude)) %>% # Remove Outliers
-                      filter(!rstatix::is_extreme(longitude)) %>% # Remove Outliers
+                      filter(!rstatix::is_extreme(latitude)) %>% # Remove outliers
+                      filter(!rstatix::is_extreme(longitude)) %>% # Remove outliers
                       filter(year > 1945) %>% # Remove records from before The Second World War
                       list() # Covert to list()
     )
