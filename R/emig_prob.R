@@ -4,7 +4,7 @@
 #' Note that this function ignores the SexDep argument.
 #'
 #' @export
-#' #' @examples
+#' @examples
 #' dontrun{
 #' emig_prob()
 #' }

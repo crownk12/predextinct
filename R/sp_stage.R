@@ -4,7 +4,7 @@
 #'
 #'
 #' @export
-#' #' @examples
+#' @examples
 #' dontrun{
 #' sp_stage()
 #' }

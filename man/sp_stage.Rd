@@ -9,3 +9,8 @@ sp_stage(Stages, MaxAge, prob_reproduction, num_offsprings, prob_surv)
 \description{
 sp_stage is a function that is required by demo.
 }
+\examples{
+dontrun{
+sp_stage()
+}
+}

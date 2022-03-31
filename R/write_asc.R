@@ -6,8 +6,8 @@
 #' @import RangeShiftR
 #' @import dismo
 #' @importFrom rstatix is_extreme
-#' @importFrom dplyr union select intersect
-#' @import raster
+#' @importFrom dplyr union select
+#' @importFrom raster getData extent values
 #' @export
 #' @examples
 #' write_asc()
@@ -71,7 +71,7 @@ Additionally old records might be likely from areas where species went extinct
 
     # Predict presence from species distribution model
 
-    predict.presence <- bioclim.data %>%
+    pred <- bioclim.data %>%
       dismo::bioclim(p = species_xy[[i]][c(2, 1)]) %>%
       dismo::predict(x = bioclim.data,
                      ext = geographic.extent)
@@ -84,21 +84,22 @@ Additionally old records might be likely from areas where species went extinct
                           yes = 1000,
                           no = data_df$Distances[i])
 
-    extent(predict.presence) <- extent(predict.presence) * distance_sp / res(predict.presence)[1]
+    pred_newres <- pred # Duplicate a new file
+    extent(pred_newres) <- extent(pred) * distance_sp / res(pred)[1]
 
     # Values: Change to percentage
 
-    values(predict.presence) <- as.integer(values(predict.presence) * 100)
+    values(pred_newres) <- as.integer(values(pred_newres) * 100)
 
     # Values: NA -> 0
 
-    values(predict.presence)[is.na(values(predict.presence))] <- 0
+    values(pred_newres)[is.na(values(pred_newres))] <- 0
 
     # Save a raster file as integer
 
     raster_name <- paste(data_df$genus[i], data_df$species[i])
 
-    writeRaster(predict.presence,
+    writeRaster(pred_newres,
                 filename = paste0("data/Inputs/", i, "_", raster_name),
                 format = "ascii",
                 overwrite = T,

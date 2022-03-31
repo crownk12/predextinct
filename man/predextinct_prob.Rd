@@ -16,8 +16,6 @@ This function predict the probability of species extinction. Read the Rangeshift
 This function will estimate the extinction probability after 50 years.
 }
 \examples{
-dontrun{
 predextinct_prob()
-}
 }
 \keyword{predextinct_prob}

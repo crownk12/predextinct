@@ -9,3 +9,8 @@ emig_prob(Stages, prob_dispersal_0, prob_dispersal_1)
 \description{
 Note that this function ignores the SexDep argument.
 }
+\examples{
+dontrun{
+emig_prob()
+}
+}
