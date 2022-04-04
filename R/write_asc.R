@@ -100,7 +100,7 @@ Additionally old records might be likely from areas where species went extinct
     raster_name <- paste(data_df$genus[i], data_df$species[i])
 
     writeRaster(pred_newres,
-                filename = paste0("data/Inputs/", i, "_", raster_name),
+                filename = paste0(folder, "Inputs/", i, "_", raster_name),
                 format = "ascii",
                 overwrite = T,
                 datatype = "INT4S")
