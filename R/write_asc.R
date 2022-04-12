@@ -30,7 +30,8 @@ write_asc <- function(csv_file, folder = "data/"){
                                      species = data_df$species[i], # species
                                      geo = T,
                                      removeZeros = T,
-                                     download = T) %>%
+                                     download = T,
+                                     end = 10000) %>%
                       dplyr::select('lat', 'lon', 'basisOfRecord', 'year') %>%
                       rename('latitude' = 'lat',
                              'longitude' = 'lon',
