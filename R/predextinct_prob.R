@@ -12,7 +12,7 @@
 #' predextinct_prob()
 
 
-predextinct_prob <-function(s, folder = "data/"){
+predextinct_prob <- function(s, folder = "data/"){
 
   prob_ls <- lapply(s, function(x){
 

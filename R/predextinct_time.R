@@ -14,7 +14,7 @@
 
 # Extinction Time after 50 years
 
-predextinct_time <-function(s, folder = "data/"){
+predextinct_time <- function(s, folder = "data/"){
 
   time_ls <- list()
 
