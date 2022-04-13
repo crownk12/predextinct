@@ -5,6 +5,7 @@
 #' @keywords csv_file
 #' @import RangeShiftR
 #' @import dismo
+#' @importFrom rgbif occ_data
 #' @importFrom rstatix is_extreme
 #' @importFrom dplyr union select
 #' @importFrom raster getData extent values
@@ -26,23 +27,18 @@ write_asc <- function(csv_file, folder = "data/"){
   ### Wonkyun: Gotcha. Not two loop, right? (Three loop?)
 
   for(i in 1:nrow(data_df)){
-    species_xy <- c(species_xy, gbif(genus = data_df$genus[i], # genus
-                                     species = data_df$species[i], # species
-                                     geo = T,
-                                     removeZeros = T,
-                                     download = T,
-                                     end = 10000) %>%
-                      dplyr::select('lat', 'lon', 'basisOfRecord', 'year') %>%
-                      rename('latitude' = 'lat',
-                             'longitude' = 'lon',
+    species_xy <- c(species_xy, as.data.frame(rgbif::occ_data(scientificName = paste(data_df$genus[i],
+                                                                                     data_df$species[i]),
+                                                              hasCoordinate = T,
+                                                              limit = 10000)$data) %>%
+                      dplyr::select(c("decimalLatitude", "decimalLongitude", "basisOfRecord", "year")) %>%
+                      rename('latitude' = 'decimalLatitude',
+                             'longitude' = 'decimalLongitude',
                              'source' = 'basisOfRecord') %>%
-                      mutate(source = factor(source)) %>%
-                      filter(!source %in% c("FOSSIL_SPECIMEN")) %>% # Remove Fossil data
-                      filter(!is.na(latitude)) %>% # Remove Null Values
-                      filter(!is.na(longitude)) %>% # Remove Null Values
-                      filter(!rstatix::is_extreme(latitude)) %>% # Remove outliers
-                      filter(!rstatix::is_extreme(longitude)) %>% # Remove outliers
-                      filter(year > 1945) %>% # Remove records from before The Second World War
+                      dplyr::filter(!source %in% c("FOSSIL_SPECIMEN")) %>% # Remove Fossil data
+                      dplyr::filter(!rstatix::is_extreme(latitude)) %>% # Remove outliers
+                      dplyr::filter(!rstatix::is_extreme(longitude)) %>% # Remove outliers
+                      dplyr::filter(year > 1945) %>% # Remove records from before The Second World War
                       list() # Covert to list()
     )
 
