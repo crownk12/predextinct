@@ -16,8 +16,6 @@
 
 predextinct_time <- function(s, folder = "data/"){
 
-  time_ls <- list()
-
   time_ls <- lapply(s, function(x){
     readPop(x, folder) %>%
       group_by(Rep, Year) %>%
@@ -27,11 +25,6 @@ predextinct_time <- function(s, folder = "data/"){
       mean
   })
 
-  sumDataset <- data.frame(ID = c(1:length(s)),
-                           ExtTime.50y = ifelse(is.na(time_ls),
-                           yes = "No extinction",
-                           no = time_ls))
-
-  return(sumDataset)
+  return(time_ls)
 
 }

@@ -74,7 +74,7 @@ setscenario <- function(csv_file, folder = "data/"){
 
   sim <- Simulation(Simulation = 0,
                     Replicates = 10,
-                    Years = 50,
+                    Years = 70,
                     OutIntPop = 10)
 
   s_list <- c()

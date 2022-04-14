@@ -25,5 +25,7 @@ predextinct_prob <- function(s, folder = "data/"){
       summarise(extProb = 1 - sum(sumPop > 0, na.rm = TRUE) / 10)
 
   })
+
   return(prob_ls)
+
 }

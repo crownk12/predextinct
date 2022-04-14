@@ -18,6 +18,10 @@
 
 write_asc <- function(csv_file, folder = "data/"){
 
+  dir.create(paste0(folder, "Inputs"), showWarnings = FALSE)
+  dir.create(paste0(folder, "Outputs"), showWarnings = FALSE)
+  dir.create(paste0(folder, "Output_Maps"), showWarnings = FALSE)
+
   data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of demo and disp
 
   species_xy <- c()
