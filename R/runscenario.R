@@ -12,9 +12,10 @@
 
 runscenario <- function(s_list, folder = "data/"){
 
-  for(i in 1:length(s_list)){
+  for(i in 1:(length(s_list)*2)){
 
     RunRS(s_list[[i]], folder)
+    RunRS(s_list[[i + 3]], folder)
 
   }
 

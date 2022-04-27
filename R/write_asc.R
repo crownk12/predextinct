@@ -5,10 +5,14 @@
 #' @keywords csv_file
 #' @import RangeShiftR
 #' @import dismo
+#' @import RStoolbox
+#' @import magrittr
+#' @import dplyr
 #' @importFrom rgbif occ_data
 #' @importFrom rstatix is_extreme
-#' @importFrom dplyr union select
+#' @importFrom dplyr union select rename
 #' @importFrom raster getData extent values
+#' @importFrom fpc dbscan
 #' @export
 #' @examples
 #' write_asc()
@@ -31,59 +35,63 @@ write_asc <- function(csv_file, folder = "data/"){
   ### Wonkyun: Gotcha. Not two loop, right? (Three loop?)
 
   for(i in 1:nrow(data_df)){
-    species_xy <- c(species_xy, as.data.frame(rgbif::occ_data(scientificName = paste(data_df$genus[i],
-                                                                                     data_df$species[i]),
+    species_xy <- c(species_xy, as.data.frame(rgbif::occ_data(scientificName = paste(data_df$Genus[i],
+                                                                                     data_df$Species[i]),
                                                               hasCoordinate = T,
-                                                              limit = 10000)$data) %>%
+                                                              limit = 100000)$data) %>%
                       dplyr::select(c("decimalLatitude", "decimalLongitude", "basisOfRecord", "year")) %>%
                       rename('latitude' = 'decimalLatitude',
                              'longitude' = 'decimalLongitude',
                              'source' = 'basisOfRecord') %>%
-                      dplyr::filter(!source %in% c("FOSSIL_SPECIMEN")) %>% # Remove Fossil data
-                      dplyr::filter(!rstatix::is_extreme(latitude)) %>% # Remove outliers
-                      dplyr::filter(!rstatix::is_extreme(longitude)) %>% # Remove outliers
-                      dplyr::filter(year > 1945) %>% # Remove records from before The Second World War
-                      list() # Covert to list()
+                      dplyr::filter(!source %in% c("FOSSIL_SPECIMEN", "PRESERVED_SPECIMEN", "MATERIAL_SAMPLE")) %>%
+                      dplyr::filter(latitude != 0) %>%
+                      dplyr::filter(longitude != 0) %>%
+                      dplyr::filter(!rstatix::is_extreme(latitude)) %>% # Remove extreme outliers
+                      dplyr::filter(!rstatix::is_extreme(longitude)) %>% # Remove extreme outliers
+                      dplyr::filter(year > 1945) %>%
+                      list()
     )
 
+    # Remove outliers through DBSCAN
 
-'We might also want to exclude very old records, as they are more likely to be unreliable.
-For instance, records from before the second world war are often very imprecise,
-especially if they were geo-referenced based on political entities.
-Additionally old records might be likely from areas where species went extinct
-(for example due to land-use change). '
-
-    # Set coordinates, x-y
+    obs.data <- species_xy[[i]][c(2, 1)][fpc::dbscan(data = species_xy[[i]][c(2, 1)], eps = 10)$isseed, ]
 
     # Create an extent-range.
 
-    geographic.extent <- extent(x = c(floor(min(species_xy[[i]][c(2, 1)]$longitude)),
-                                      ceiling(max(species_xy[[i]][c(2, 1)]$longitude)),
-                                      floor(min(species_xy[[i]][c(2, 1)]$latitude)),
-                                      ceiling(max(species_xy[[i]][c(2, 1)]$latitude))))
+    geographic.extent <- raster::extent(x = c(floor(min(obs.data$longitude)),
+                                              ceiling(max(obs.data$longitude)),
+                                              floor(min(obs.data$latitude)),
+                                              ceiling(max(obs.data$latitude))))
 
-    # Build a model
+    # Current: build a model
 
-    bioclim.data <- raster::getData(name = "worldclim", # They are the average for the years 1970-2000.
+    bioclim.data <- raster::getData(name = "worldclim",
                                     var = "bio",
                                     res = 10,
                                     path = "data/") %>%
-      raster::crop(y = geographic.extent) # Crop bioclim data to geographic extent of saguaro
+      raster::crop(y = geographic.extent)
+
+    # pca
+
+    pcamap <- RStoolbox::rasterPCA(bioclim.data, spca = T)
+    bioclim.pca <- raster::subset(x = pcamap$map, c(1, 2))
+
+    # Build species distribution model
+
+    bc.model <- dismo::bioclim(x = bioclim.pca, p = obs.data)
 
     # Predict presence from species distribution model
 
-    pred <- bioclim.data %>%
-      dismo::bioclim(p = species_xy[[i]][c(2, 1)]) %>%
-      dismo::predict(x = bioclim.data,
+    pred <- bioclim.pca %>%
+      dismo::bioclim(p = obs.data) %>%
+      dismo::predict(x = bioclim.pca,
                      ext = geographic.extent)
 
     # Tuning resolutions and values as integer
     # Resolution: c(0.1666667, 0.1666667) -> c(1000, 1000)
     # If the distance of specific species are smaller than 1000, resolution will be the distance.
 
-    distance_sp <- ifelse(data_df$Distances[i] >= 1000,
-                          yes = 1000,
-                          no = data_df$Distances[i])
+    distance_sp <- ifelse(data_df$DispDist[i] >= 1000, yes = 1000, no = data_df$DispDist[i])
 
     pred_newres <- pred # Duplicate a new file
     extent(pred_newres) <- extent(pred) * distance_sp / res(pred)[1]
@@ -98,7 +106,7 @@ Additionally old records might be likely from areas where species went extinct
 
     # Save a raster file as integer
 
-    raster_name <- paste(data_df$genus[i], data_df$species[i])
+    raster_name <- paste(data_df$Genus[i], data_df$Species[i])
 
     writeRaster(pred_newres,
                 filename = paste0(folder, "Inputs/", i, "_", raster_name),
@@ -106,7 +114,53 @@ Additionally old records might be likely from areas where species went extinct
                 overwrite = T,
                 datatype = "INT4S")
 
-    print(paste0("Create ", raster_name, " asc raster file."))
+    print(paste0("Create current ", raster_name, " asc raster file."))
+
+    # Projected: build a model
+
+    forecast.data <- raster::getData(name = "CMIP5", # forecast data
+                                     var = "bio",    # bioclim
+                                     res = 10,       # 10 minute resolution
+                                     path = "data/", # destination directory
+                                     model = "GD",   # GFDL-ESM2G
+                                     rcp = "45",     # CO2 increase 4.5
+                                     year = 70)      # 2070
+
+    names(forecast.data) <- names(bioclim.data)
+
+    # pca
+
+    pcamap_fore <- RStoolbox::rasterPCA(forecast.data, spca = T)
+    fore.pca <- raster::subset(x = pcamap_fore$map, c(1, 2))
+
+    # Predict forecast from species distribution model
+
+    fore <- dismo::predict(object = bc.model,
+                           x = fore.pca,
+                           ext = geographic.extent)
+
+    fore_newres <- fore # Duplicate a new file
+    extent(fore_newres) <- extent(fore) * distance_sp / res(fore)[1]
+
+    # Values: Change to percentage
+
+    values(fore_newres) <- as.integer(values(fore_newres) * 100)
+
+    # Values: NA -> 0
+
+    values(fore_newres)[is.na(values(fore_newres))] <- 0
+
+    # Save a raster file as integer
+
+    raster_name <- paste(data_df$Genus[i], data_df$Species[i])
+
+    writeRaster(fore_newres,
+                filename = paste0(folder, "Inputs/", i, "_", raster_name, "_70"),
+                format = "ascii",
+                overwrite = T,
+                datatype = "INT4S")
+
+    print(paste0("Create projected ", raster_name, " asc raster file."))
 
   }
 

@@ -20,14 +20,14 @@ setscenario <- function(csv_file, folder = "data/"){
   inputs_file <- list.files(paste0(folder, "Inputs")) # asc raster files
   data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of sp_demography and sp_dispersal
 
-  if(length(inputs_file) == nrow(data_df)){
+  if(length(inputs_file) == nrow(data_df) * 2){
 
     lands <- c()
     demos <- c()
     disps <- c()
     inits <- c()
 
-    for(i in 1:length(inputs_file)){
+    for(i in 1:nrow(data_df)){
 
       obs <- data_df[i, ]
       asc_raster <- inputs_file[i]
@@ -35,22 +35,21 @@ setscenario <- function(csv_file, folder = "data/"){
       # We should save asc raster files in the data folder
       lands <- c(lands, ImportedLandscape(LandscapeFile = paste0(asc_raster),
                                           # If the distance of specific species are smaller than 1000, resolution will be the distance.
-                                          Resolution = ifelse(data_df$Distances[i] >= 1000,
-                                                              yes = 1000,
-                                                              no = data_df$Distances[i]),
+                                          Resolution = as.numeric(ifelse(data_df$DispDist[i] >= 1000, yes = 1000,
+                                                                         no = data_df$DispDist[i])),
                                           HabPercent = T,
-                                          K_or_DensDep = 0.5)) # Density Dependence 1/b
+                                          K_or_DensDep = as.numeric(data_df$DensDep[i]))) # Density Dependence 1/b
 
       demos <- c(demos, sp_demography(obs$Stages,
                                       obs$MaxAge,
-                                      obs$prob_reproduction,
-                                      obs$num_offsprings,
-                                      obs$prob_surv))
+                                      obs$pReprod,
+                                      obs$nOffspring,
+                                      obs$pSurv))
 
-      disps <- c(disps, sp_dispersal(Distances = as.numeric(obs$Distances),
+      disps <- c(disps, sp_dispersal(Distances = as.numeric(obs$DispDist),
                                      Stages = obs$Stages,
-                                     prob_dispersal_0 = obs$prob_dispersal_0,
-                                     prob_dispersal_1 = obs$prob_dispersal_1))
+                                     prob_dispersal_0 = obs$pDisp_0,
+                                     prob_dispersal_1 = obs$pDisp_1))
 
       inits <- c(inits, Initialise(InitType = 0,
                                    FreeType = 1,
@@ -79,7 +78,7 @@ setscenario <- function(csv_file, folder = "data/"){
 
   s_list <- c()
 
-  for(i in 1:length(inputs_file)){
+  for(i in 1:nrow(data_df)){
 
     s <- RSsim(batchnum = i, # Batch ID's prevent overwriting
                land = params_mat[[i, 1]],
@@ -92,6 +91,8 @@ setscenario <- function(csv_file, folder = "data/"){
     s_list <- c(s_list, s)
 
   }
+
+  s_list <- c(s_list, s_list)
 
   return(s_list)
 

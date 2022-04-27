@@ -6,6 +6,7 @@
 #' @param folder: [complete].
 #' @keywords predextinct_prob
 #' @import RangeShiftR
+#' @import magrittr
 #' @importFrom dplyr union select intersect
 #' @export
 #' @examples

@@ -6,6 +6,7 @@
 #' @param folder: [complete].
 #' @keywords predextinct_plot
 #' @import RangeShiftR
+#' @import magrittr
 #' @export
 #' @examples
 #' predextinct_plot()
