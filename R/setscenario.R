@@ -19,15 +19,27 @@ setscenario <- function(csv_file, folder = "data/"){
 
   inputs_file <- list.files(paste0(folder, "Inputs")) # asc raster files
   data_df <- read.csv(paste0(folder, csv_file), header = T) # csv files of sp_demography and sp_dispersal
+  data_df <- data.frame(mapply(rbind, data_df, data_df))
+  data_df$ID <- as.integer(data_df$ID)
+  data_df$Stages <- as.integer(data_df$Stage)
+  data_df$MaxAge <- as.numeric(data_df$MaxAge)
+  data_df$pReprod <- as.numeric(data_df$pReprod)
+  data_df$nOffspring <- as.numeric(data_df$nOffspring)
+  data_df$pSurv <- as.numeric(data_df$pSurv)
+  data_df$pDisp_0 <- as.numeric(data_df$pDisp_0)
+  data_df$pDisp_1 <- as.numeric(data_df$pDisp_1)
+  data_df$DispDist <- as.numeric(data_df$DispDist)
+  data_df$DensDep <- as.numeric(data_df$DensDep)
 
-  if(length(inputs_file) == nrow(data_df) * 2){
+
+  if(length(inputs_file) == nrow(data_df)){
 
     lands <- c()
     demos <- c()
     disps <- c()
     inits <- c()
 
-    for(i in 1:nrow(data_df)){
+    for(i in 1:length(inputs_file)){
 
       obs <- data_df[i, ]
       asc_raster <- inputs_file[i]
@@ -91,8 +103,6 @@ setscenario <- function(csv_file, folder = "data/"){
     s_list <- c(s_list, s)
 
   }
-
-  s_list <- c(s_list, s_list)
 
   return(s_list)
 
