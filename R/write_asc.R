@@ -94,7 +94,7 @@ write_asc <- function(csv_file, folder = "data/"){
     distance_sp <- ifelse(data_df$DispDist[i] >= 1000, yes = 1000, no = data_df$DispDist[i])
 
     pred_newres <- pred # Duplicate a new file
-    extent(pred_newres) <- extent(pred) * distance_sp / res(pred)[1]
+    extent(pred_newres) <- raster::extent(pred) * distance_sp / raster::res(pred)[1]
 
     # Values: Change to percentage
 
