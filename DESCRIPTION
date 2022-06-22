@@ -2,11 +2,10 @@ Package: predextinct
 Title: Predicting Species Extinctions
 Version: 0.0.1.4
 Authors@R: c(
-    person("Wonkyun", "Yim", email = "yimwk88@email.arizona.edu", role = c("aut", "cre")),
-    person("Cristian", "Roman Palacios", email = "cromanpa94@arizona.edu", role = c("aut"))
+    person("W", "Y", email = "email1", role = c("aut", "cre")),
+    person("C", "R", email = "email2", role = c("aut"))
     )
 Date: 2022-03-26
-URL: https://github.com/crownk12/predextinct/
 Description: Predicting species-level extinctions from population-level data for climate-related extinction risk assessment.
 License: MIT + file LICENSE
 Imports: RangeShiftR (>= 1.0.3), Rcpp (>= 1.0.0), raster (>= 3.0.0), Rdpack (>= 0.7), dismo (>= 1.3.5), methods
